@@ -42,7 +42,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DTOs\Blog.cs" />
+    <Compile Include="DTOs\AuthorDTO.cs" />
+    <Compile Include="DTOs\BlogDTO.cs" />
+    <Compile Include="DTOs\PostDTO.cs" />
+    <Compile Include="DTOs\ReaderDTO.cs" />
+    <Compile Include="Interfaces\IPerson.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\Resource.Designer.cs">
       <AutoGen>True</AutoGen>
