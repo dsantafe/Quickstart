@@ -1,8 +1,7 @@
-﻿using Quickstart.BL.DTOs;
+﻿using Quickstart.BL.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Configuration;
+using System.Linq;
 
 namespace Quickstart.Consola
 {
@@ -10,17 +9,19 @@ namespace Quickstart.Consola
     {
         static void Main(string[] args)
         {
+            BlogService blogService = new BlogService();
             var param = ConfigurationManager.AppSettings["param"];
-            var blogs = new List<BlogDTO>();
 
             Console.Write("Ingrese la cantidad de Blogs a crear: ");
             var cantidadBlogs = int.Parse(Console.ReadLine());
 
             for (int i = 0; i < cantidadBlogs; i++)
             {
-                Console.Write("Ingrese el nombre para un nuevo Blog: ");
-                blogs.Add(new BlogDTO { Id = i, Name = Console.ReadLine() });
+                Console.Write("Ingrese el nombre para un nuevo Blog: ");                   
+                var message = blogService.CreateBlog(Console.ReadLine());
             }
+
+            var blogs = blogService.GetBlogs();
 
             /*
                SELECT fields
@@ -40,6 +41,15 @@ namespace Quickstart.Consola
 
             //for (int i = 0; i < query.Count(); i++)
             //    Console.WriteLine(query[i].Name);
+
+            Console.WriteLine("Ingresa el Id que vas a editar");
+            var id = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Ingresa el nuevo nombre");
+            var name = Console.ReadLine();
+            blogService.EditBlog(id, name);
+
+            var blog = blogService.GetBlogs(id).FirstOrDefault();
+            Console.WriteLine($"Id: {blog.Id} Nombre: {blog.Name}");
 
             Console.ReadKey();
         }
