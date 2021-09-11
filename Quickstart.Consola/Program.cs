@@ -9,7 +9,13 @@ namespace Quickstart.Consola
     {
         static void Main(string[] args)
         {
-            BlogService blogService = new BlogService();            
+            EF();            
+        }
+
+        #region EF
+        private async static void EF()
+        {
+            BlogService blogService = new BlogService();
 
             Console.Write("Ingrese la cantidad de Blogs a crear: ");
             var cantidadBlogs = int.Parse(Console.ReadLine());
@@ -17,21 +23,21 @@ namespace Quickstart.Consola
             for (int i = 0; i < cantidadBlogs; i++)
             {
                 Console.Write("Ingrese el nombre para un nuevo Blog: ");
-                blogService.CreateBlogEF(Console.ReadLine());
+                await blogService.CreateBlogEF(Console.ReadLine());
             }
 
-            var blogs = blogService.GetBlogsEF(null);
+            var blogs = await blogService.GetBlogsEF(null);
 
             /*
                SELECT fields
                FROM table t
                WHERE condition
             */
-            var query = (from b in blogs                         
+            var query = (from b in blogs
                          where b.Name.Length < 50
                          select b).ToList();
 
-            var query2 = blogs.Where(x => x.Name.Length < 50)                              
+            var query2 = blogs.Where(x => x.Name.Length < 50)
                               .Select(x => x)
                               .ToList();
 
@@ -43,13 +49,14 @@ namespace Quickstart.Consola
             var id = Convert.ToInt32(Console.ReadLine());
             Console.WriteLine("Ingresa el nuevo nombre");
             var name = Console.ReadLine();
-            blogService.EditBlogEF(id, name);
+            await blogService.EditBlogEF(id, name);
 
-            var blog = blogService.GetBlogsEF(id).FirstOrDefault();
+            var blog = (await blogService.GetBlogsEF(id)).FirstOrDefault();
             Console.WriteLine($"Id: {blog.Id} Nombre: {blog.Name}");
 
             Console.ReadKey();
-        }
+        } 
+        #endregion
 
         #region SQL
         private static void SQL()

@@ -1,8 +1,10 @@
 ﻿using Quickstart.BL.DTOs;
+using Quickstart.BL.Repositories.Implements;
 using Quickstart.DAL.Data;
 using Quickstart.DAL.Models;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Quickstart.BL.Services
 {
@@ -13,12 +15,12 @@ namespace Quickstart.BL.Services
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public List<PostDTO> GetPostsEF(int? id)
+        public async Task<List<PostDTO>> GetPostsEF(int? id)
         {
-            var context = new QuickstartContext();
+            var postRepository = new PostRepository();
 
             //  SELECT * FROM Post JOIN Blog....
-            var query = context.Posts.Include("Blog").ToList();
+            var query = await postRepository.GetAll();
             var posts = query.Select(x => PostToDTO(x)).ToList();
 
             if (id != null)
@@ -39,5 +41,16 @@ namespace Quickstart.BL.Services
                 Name = post.Blog.Name
             }
         };
+
+        public async Task<List<PostDTO>> GetPostsByBlogId(int blogId)
+        {
+            var postRepository = new PostRepository();
+
+            //  SELECT * FROM Post JOIN Blog.... WHERE BlogId = @blogId
+            var query = await postRepository.GetByBlogId(blogId);
+            var posts = query.Select(x => PostToDTO(x)).ToList();            
+
+            return posts;
+        }
     }
 }

@@ -57,6 +57,12 @@
     <Compile Include="DTOs\ReaderDTO.cs" />
     <Compile Include="Interfaces\IPerson.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\Implements\PostRepository.cs" />
+    <Compile Include="Repositories\IPostRepository.cs" />
+    <Compile Include="Repositories\IBlogRepository.cs" />
+    <Compile Include="Repositories\IGenericRepository.cs" />
+    <Compile Include="Repositories\Implements\BlogRepository.cs" />
+    <Compile Include="Repositories\Implements\GenericRepository.cs" />
     <Compile Include="Resources\Resource.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -73,7 +79,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Helpers\" />
-    <Folder Include="Repositories\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Resource.es.resx" />

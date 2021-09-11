@@ -1,10 +1,12 @@
 ﻿using Quickstart.BL.DTOs;
+using Quickstart.BL.Repositories.Implements;
 using Quickstart.DAL.Data;
 using Quickstart.DAL.Models;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Quickstart.BL.Services
 {
@@ -39,12 +41,10 @@ namespace Quickstart.BL.Services
         /// CreateBlogEF
         /// </summary>
         /// <param name="name"></param>
-        public void CreateBlogEF(string name)
+        public async Task CreateBlogEF(string name)
         {
-            //  INSERT INTO Blog(Name) VALUES(@name);
-            var context = new QuickstartContext();
-            context.Blogs.Add(new Blog { Name = name });
-            context.SaveChanges();
+            var blogRepository = new BlogRepository();
+            var blog = await blogRepository.Insert(new Blog { Name = name });            
         }
 
         /// <summary>
@@ -83,15 +83,10 @@ namespace Quickstart.BL.Services
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public List<BlogDTO> GetBlogsEF(int? id)
+        public async Task<List<BlogDTO>> GetBlogsEF(int? id)
         {
-            var context = new QuickstartContext();
-
-            //var blogs = (from q in context.Blogs
-            //             select BlogToDTO(q)).ToList();
-
-            //  SELECT * FROM Blog
-            var query = context.Blogs.ToList();
+            var blogRepository = new BlogRepository();
+            var query = await blogRepository.GetAll();            
             var blogs = query.Select(x => BlogToDTO(x)).ToList();
 
             if (id != null)
@@ -142,35 +137,23 @@ namespace Quickstart.BL.Services
         /// </summary>
         /// <param name="id"></param>
         /// <param name="name"></param>
-        public void EditBlogEF(int id,
+        public async Task EditBlogEF(int id,
             string name)
         {
-            var context = new QuickstartContext();
-            var blog = context.Blogs.Find(id);
-            //var blog = context.Blogs.FirstOrDefault(x => x.Id == id);
-
-            //reemplazando
-            //  UPDATE Blog SET Name = @name WHERE Id = @id
+            var blogRepository = new BlogRepository();
+            var blog = await blogRepository.GetById(id);
             blog.Name = name;
-
-            //persistis la información
-            context.SaveChanges();
+            await blogRepository.Update(blog);           
         }
 
         /// <summary>
         /// DeleteBlogEF
         /// </summary>
         /// <param name="id"></param>
-        public void DeleteBlogEF(int id)
+        public async Task DeleteBlogEF(int id)
         {
-            var context = new QuickstartContext();          
-            //var blog = context.Blogs.FirstOrDefault(x => x.Id == id);
-
-            //  DELETE FROM Blog WHERE Id = @id
-            context.Blogs.Remove(context.Blogs.Find(id));
-
-            //persistis la información
-            context.SaveChanges();
+            var blogRepository = new BlogRepository();
+            await blogRepository.Delete(id);            
         }
     }
 }
