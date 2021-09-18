@@ -66,6 +66,10 @@
       <Project>{73cf59cd-fbec-416f-b82f-9dd224235975}</Project>
       <Name>Quickstart.BL</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Quickstart.DAL\Quickstart.DAL.csproj">
+      <Project>{bbd6f9f8-ccb8-4266-b317-a97521edcb26}</Project>
+      <Name>Quickstart.DAL</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

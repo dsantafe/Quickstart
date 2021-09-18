@@ -10,6 +10,7 @@ namespace Quickstart.BL.DTOs
 
         [Required(ErrorMessage = "El campo Name es requerido")]
         [Display(Name = "Name")]
+        [StringLength(50)]
         public string Name { get; set; }
     }
 }

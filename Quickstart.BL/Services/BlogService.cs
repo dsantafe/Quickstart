@@ -83,11 +83,10 @@ namespace Quickstart.BL.Services
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<List<BlogDTO>> GetBlogsEF(int? id)
+        public async Task<IEnumerable<Blog>> GetBlogsEF(int? id)
         {
             var blogRepository = new BlogRepository();
-            var query = await blogRepository.GetAll();            
-            var blogs = query.Select(x => BlogToDTO(x)).ToList();
+            var blogs = await blogRepository.GetAll();   
 
             if (id != null)
                 //  SELECT * FROM Blog WHERE Id = @id
@@ -95,12 +94,6 @@ namespace Quickstart.BL.Services
 
             return blogs;
         }
-
-        private BlogDTO BlogToDTO(Blog blog) => new BlogDTO
-        {
-            Id = blog.Id,
-            Name = blog.Name
-        };
 
         /// <summary>
         /// EditBlog
