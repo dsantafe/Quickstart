@@ -5,6 +5,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Quickstart.Core.BL.Models;
+using Quickstart.Core.BL.Repositories;
+using Quickstart.Core.BL.Repositories.Implements;
 using System;
 
 namespace Quickstart.Core.API
@@ -38,6 +40,8 @@ namespace Quickstart.Core.API
             {
                 options.AddDefaultPolicy(builder => { builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader(); });
             });
+
+            services.AddScoped<IBlogRepository, BlogRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
