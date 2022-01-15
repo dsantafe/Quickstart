@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Quickstart.Core.BL.DTOs;
 using Quickstart.Core.BL.Models;
@@ -17,7 +18,7 @@ namespace Quickstart.Core.API.Controllers
      * api/Blogs/1 (PUT)
      * api/Blogs/1 (DELETE)
      */
-
+    
     [Route("api/[controller]")]
     [ApiController]
     public class BlogsController : ControllerBase
@@ -56,6 +57,7 @@ namespace Quickstart.Core.API.Controllers
             });
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create(BlogDTO blogDTO)
         {
@@ -88,6 +90,7 @@ namespace Quickstart.Core.API.Controllers
             }
         }
 
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> Edit(int id, BlogDTO blogDTO)
         {
@@ -127,6 +130,7 @@ namespace Quickstart.Core.API.Controllers
             }
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
