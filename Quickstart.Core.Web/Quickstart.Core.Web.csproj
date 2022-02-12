@@ -21,7 +21,6 @@
   <ItemGroup>
     <Folder Include="Assets\Templates\" />
     <Folder Include="Pages\" />
-    <Folder Include="Views\Blogs\" />
   </ItemGroup>
 
 </Project>
