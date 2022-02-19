@@ -4,7 +4,6 @@ namespace Quickstart.Core.BL.DTOs
 {
     public class BlogDTO
     {
-        [Required(ErrorMessage = "El campo Id es requerido")]
         [Display(Name = "ID")]
         public int Id { get; set; }
 
