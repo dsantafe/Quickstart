@@ -1,8 +1,8 @@
 ﻿$("#edit-save").click(function () {
-    EditBlog();
+    editBlog();
 });
 
-function EditBlog() {
+function editBlog() {
 
     let model = $("#blogEditForm").serialize();
 
@@ -11,7 +11,7 @@ function EditBlog() {
             getBlogs();
             $("#modalBlogs").modal("hide");
         } else {
-            console.table(data.message);
+            swal("Notification", data.message, "error");
         }
     }).fail(function (data) {
         console.table(data);

@@ -1,5 +1,8 @@
 ﻿$(document).ready(function () {
     getBlogs();
+
+    //load dropdownlist ddlBlogs
+    getBlogsSelect();
 });
 
 $("#create").click(function () {
@@ -23,7 +26,7 @@ function getBlogs() {
     $row.append($div);
 
     $.get("/Blogs/IndexJson", function (data) {
-        console.table(data);
+        $.notify("Load data", "info");
 
         if (data.isSuccessful) {
             $('#tableBlogs').DataTable({
@@ -41,7 +44,8 @@ function getBlogs() {
                     {
                         targets: 2,
                         render: function (data, type, row) {
-                            return '<a href="javascript:void" class="btn btn-warning edit">Editar</a>';
+                            return '<a href="javascript:void" class="btn btn-warning edit">Edit</a>' +
+                                '<a href="javascript:void" class="btn btn-danger delete">Delete</a>';
                         }
                     }
                 ]
@@ -53,10 +57,56 @@ function getBlogs() {
                 $("#modalBlogs .modal-body").load("/Blogs/Edit/" + id);
                 $("#modalBlogs").modal("show");
             });
+
+            $('#tableBlogs').on('click', 'tbody a.delete', function (data) {
+                console.log("Here");
+                let id = $(this).parent().siblings('td')[0].innerText;
+                deleteBlogs(id);                
+            });
         } else {
-            console.table(data.message);
+            swal("Notification", data.message, "error");
         }
     }).fail(function (data) {
         console.table(data);
+    });
+}
+
+function deleteBlogs(id) {
+    swal({
+        title: "Are you sure?",
+        text: "You will not be able to recover this register!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonClass: "btn-danger",
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "No, cancel plx!",
+        closeOnConfirm: false,
+        closeOnCancel: false
+    },
+        function (isConfirm) {
+            if (isConfirm) {
+
+                $.get("/Blogs/DeleteJson/" + id, function (data) {
+                    if (data.isSuccessful) {
+                        getBlogs();
+                        swal("Deleted!", "Your register has been deleted.", "success");
+                    }
+                }).fail(function (data) {
+                    swal("Notification", data.message, "error");
+                });
+            } else {
+                swal("Cancelled", "Your register is safe :)", "error");
+            }
+        });
+}
+
+function getBlogsSelect() {
+    $.get("/Blogs/GetBlogsSelect", function (data) {
+        $("#ddlBlogs").empty();
+        $("#ddlBlogs").select2({
+            placeholder: "Seleccione",
+            data: JSON.parse(data.data)
+        });
+        $("#ddlBlogs").val("").trigger("change");
     });
 }

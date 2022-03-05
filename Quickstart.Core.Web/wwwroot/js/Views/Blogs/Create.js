@@ -1,8 +1,8 @@
 ﻿$("#create-save").click(function () {
-    CreateBlog();
+    createBlog();
 });
 
-function CreateBlog() {
+function createBlog() {
 
     //var model = { "Name": $("#Name").val() };
     let model = $("#blogCreateForm").serialize();
@@ -12,7 +12,7 @@ function CreateBlog() {
             getBlogs();
             $("#modalBlogs").modal("hide");
         } else {
-            console.table(data.message);
+            swal("Notification", data.message, "error");
         }
     }).fail(function (data) {
         console.table(data);

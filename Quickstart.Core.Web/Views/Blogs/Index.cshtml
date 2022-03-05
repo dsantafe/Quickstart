@@ -1,4 +1,10 @@
-﻿<h1>Index</h1>
+﻿<h1>Blogs</h1>
+
+<select id="ddlBlogs" name="ddlBlogs" class="form-control"></select>
+<hr />
+
+<div id="graph" style="height: 150px;width:150px"></div>
+<hr />
 
 <button type="button" class="btn btn-primary" id="create">New</button>
 
@@ -25,4 +31,20 @@
         </div>
     </div>
 </div>
+
 <script src="~/js/Views/Blogs/Index.js?@DateTime.UtcNow.ToString("yyyyyMMdd")"></script>
+
+<script>
+    Morris.Donut({
+      element: 'graph',
+      data: [
+        {value: 70, label: 'foo'},
+        {value: 15, label: 'bar'},
+        {value: 10, label: 'baz'},
+        {value: 5, label: 'A really really long label'}
+      ],
+      formatter: function (x) { return x + "%"}
+    }).on('click', function(i, row){
+      console.log(i, row);
+    });
+</script>

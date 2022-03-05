@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Quickstart.Core.BL.Controls;
 using Quickstart.Core.BL.DTOs;
 using System;
 using System.Collections.Generic;
@@ -28,6 +30,23 @@ namespace Quickstart.Core.Web.Controllers
             {
                 Code = (int)HttpStatusCode.OK,
                 Data = blogs,
+                IsSuccessful = true
+            });
+        }
+
+        [HttpGet]
+        public IActionResult GetBlogsSelect()
+        {
+            var selectControl = blogs.Select(x => new SelectControl
+            {
+                Id = x.Id,
+                Text = x.Name
+            }).ToList();
+
+            return Json(new ResponseDTO
+            {
+                Code = (int)HttpStatusCode.OK,
+                Data = JsonConvert.SerializeObject(selectControl),
                 IsSuccessful = true
             });
         }
@@ -94,6 +113,31 @@ namespace Quickstart.Core.Web.Controllers
                 blogs.Remove(blogs.FirstOrDefault(x => x.Id == blogDTO.Id));
                 blogs.Add(blogDTO);
                 blogs = blogs.OrderBy(x => x.Id).ToList();
+
+                return Json(new ResponseDTO
+                {
+                    Code = (int)HttpStatusCode.OK,
+                    Message = "Se ha realizado el proceso con exito.",
+                    IsSuccessful = true
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new ResponseDTO
+                {
+                    IsSuccessful = false,
+                    Code = (int)HttpStatusCode.InternalServerError,
+                    Message = ex.Message
+                });
+            }
+        }
+
+        [HttpGet]
+        public IActionResult DeleteJson(int id)
+        {
+            try
+            {
+                blogs.Remove(blogs.FirstOrDefault(x => x.Id == id));
 
                 return Json(new ResponseDTO
                 {
